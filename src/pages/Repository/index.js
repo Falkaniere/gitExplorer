@@ -114,7 +114,7 @@ export default class Repository extends Component {
                 type="button"
                 key={filter.label}
                 onClick={() => this.handleClickFilter(index)}
-              />
+              >{filter.label}</button>
             ))}
           </IssueFilter>
           {issues.map(issue => (
