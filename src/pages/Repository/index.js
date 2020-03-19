@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import api from '../../services/api';
 
+import { FaSpinner } from 'react-icons/fa';
 import Container from '../../components/Container/';
 import { Loading, Owner, IssueList, IssueFilter, PageActions } from './styles';
 
@@ -91,7 +92,10 @@ export default class Repository extends Component {
     } = this.state;
 
     if (loading) {
-      return <Loading>Carregando</Loading>;
+      return (
+        <Loading>
+          <FaSpinner color="#FFF" size={50} />
+        </Loading>);
     }
 
     return (
