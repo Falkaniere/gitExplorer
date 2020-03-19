@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
 import { FaGithubAlt, FaPlus, FaSpinner } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 import api from '../../services/api';
 
-import { Container, Form, SubmitButton, List } from './styles';
+import Container from '../../components/Container';
+
+import { Form, SubmitButton, List } from './styles';
 
 export default class Main extends Component {
   state = {
     newRepository: '',
     repositories: [],
     loading: false,
+    error: null,
   };
 
   // Carregar dados no localstorage
@@ -37,25 +41,37 @@ export default class Main extends Component {
   handleSubmmit = async e => {
     e.preventDefault();
 
-    this.setState({ loading: true });
+    this.setState({ loading: true, error: false });
 
-    const { newRepository, repositories } = this.state;
+    try {
+      const { newRepository, repositories } = this.state;
 
-    const response = await api.get(`/repos/${newRepository}`);
+      if (newRepository === '')
+        throw 'Você precisa adicionar um repositório válido';
 
-    const data = {
-      name: response.data.full_name,
-    };
+      const repositoryExist = repositories.find(r => r.name === newRepository);
 
-    this.setState({
-      repositories: [...repositories, data],
-      newRepository: '',
-      loading: false,
-    });
+      if (repositoryExist) throw 'Repositório já existe';
+
+      const response = await api.get(`/repos/${newRepository}`);
+
+      const data = {
+        name: response.data.full_name,
+      };
+
+      this.setState({
+        repositories: [...repositories, data],
+        newRepository: '',
+      });
+    } catch (error) {
+      this.setState({ error: true });
+    } finally {
+      this.setState({ loading: false });
+    }
   };
 
   render() {
-    const { newRepository, repositories, loading } = this.state;
+    const { newRepository, repositories, loading, error } = this.state;
 
     return (
       <Container>
@@ -64,7 +80,7 @@ export default class Main extends Component {
           Repositorios
         </h1>
 
-        <Form onSubmit={this.handleSubmmit}>
+        <Form onSubmit={this.handleSubmmit} error={error}>
           <input
             type="text"
             placeholder="Adicionar repositório"
@@ -84,7 +100,9 @@ export default class Main extends Component {
           {repositories.map(repository => (
             <li key={repository.name}>
               <span>{repository.name}</span>
-              <a href>Detalhes</a>
+              <Link to={`/repository${encodeURIComponent(repository.name)}`}>
+                Detalhes
+              </Link>
             </li>
           ))}
         </List>
