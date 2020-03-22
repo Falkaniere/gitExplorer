@@ -74,3 +74,18 @@ export const List = styled.ul`
     }
   }
 `;
+
+export const ButtonList = styled.button`
+  background: #3366ff;
+  border: 0;
+  padding: 0px 15px;
+  border-radius: 4px;
+
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const Footer = styled.footer``;

@@ -1,4 +1,4 @@
-import styled, {keyframes, css} from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 
 const rotate = keyframes`
   from{
@@ -20,7 +20,7 @@ export const Loading = styled.div`
   align-items: center;
   height: 100vh;
 
-  svg{
+  svg {
     animation: ${rotate} 2s linear infinite;
   }
 `;
@@ -72,6 +72,7 @@ export const IssueFilter = styled.div`
       background: #576574;
       color: white;
     }
+  }
 `;
 
 export const IssueList = styled.ul`
