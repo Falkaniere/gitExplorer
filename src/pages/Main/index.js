@@ -26,13 +26,13 @@ export default class Main extends Component {
   }
 
   // Salvar dados no localstorage
-  componentDidUpdate(_, prevState) {
-    const { repositories } = this.state;
+  // componentDidUpdate(_, prevState) {
+  //   const { repositories } = this.state;
 
-    if (prevState.repositories !== repositories) {
-      localStorage.setItem('repositories', JSON.stringify(repositories));
-    }
-  }
+  //   if (prevState.repositories !== repositories) {
+  //     localStorage.setItem('repositories', JSON.stringify(repositories));
+  //   }
+  // }
 
   handleInputChange = e => {
     this.setState({ newRepository: e.target.value });
