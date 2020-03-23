@@ -95,7 +95,8 @@ export default class Repository extends Component {
       return (
         <Loading>
           <FaSpinner color="#FFF" size={50} />
-        </Loading>);
+        </Loading>
+      );
     }
 
     return (
@@ -114,7 +115,9 @@ export default class Repository extends Component {
                 type="button"
                 key={filter.label}
                 onClick={() => this.handleClickFilter(index)}
-              >{filter.label}</button>
+              >
+                {filter.label}
+              </button>
             ))}
           </IssueFilter>
           {issues.map(issue => (

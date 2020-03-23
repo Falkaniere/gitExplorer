@@ -10,20 +10,20 @@ import { Form, SubmitButton, List } from './styles';
 
 export default class Main extends Component {
   state = {
-    newRepository: '',
+    name: '',
     repositories: [],
     loading: false,
     error: null,
   };
 
   // Carregar dados no localstorage
-  componentDidMount() {
-    const repositories = localStorage.getItem('repositories');
+  // componentDidMount() {
+  //   const repositories = localStorage.getItem('repositories');
 
-    if (repositories) {
-      this.setState({ repositories: JSON.parse(repositories) });
-    }
-  }
+  //   if (repositories) {
+  //     this.setState({ repositories: JSON.parse(repositories) });
+  //   }
+  // }
 
   // Salvar dados no localstorage
   // componentDidUpdate(_, prevState) {
@@ -35,7 +35,7 @@ export default class Main extends Component {
   // }
 
   handleInputChange = e => {
-    this.setState({ newRepository: e.target.value });
+    this.setState({ name: e.target.value });
   };
 
   handleSubmmit = async e => {
@@ -44,25 +44,12 @@ export default class Main extends Component {
     this.setState({ loading: true, error: false });
 
     try {
-      const { newRepository, repositories } = this.state;
+      const { name } = this.state;
 
-      if (newRepository === '')
-        throw 'Você precisa adicionar um repositório válido';
+      if (name === '');
+      throw 'Digite um repositório válido';
 
-      const repositoryExist = repositories.find(r => r.name === newRepository);
-
-      if (repositoryExist) throw 'Repositório já existe';
-
-      const response = await api.get(`/repos/${newRepository}`);
-
-      const data = {
-        name: response.data.full_name,
-      };
-
-      this.setState({
-        repositories: [...repositories, data],
-        newRepository: '',
-      });
+      await api.post('/repos/', { name });
     } catch (error) {
       this.setState({ error: true });
     } finally {
