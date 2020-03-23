@@ -17,13 +17,7 @@ export default class Main extends Component {
   };
 
   // Carregar dados no localstorage
-  // componentDidMount() {
-  //   const repositories = localStorage.getItem('repositories');
-
-  //   if (repositories) {
-  //     this.setState({ repositories: JSON.parse(repositories) });
-  //   }
-  // }
+  componentDidMount() {}
 
   // Salvar dados no localstorage
   // componentDidUpdate(_, prevState) {
@@ -45,9 +39,7 @@ export default class Main extends Component {
 
     try {
       const { name } = this.state;
-
-      if (name === '');
-      throw 'Digite um repositório válido';
+      if (name === '') throw 'digite um repósitorio';
 
       await api.post('/repos/', { name });
     } catch (error) {
@@ -55,10 +47,14 @@ export default class Main extends Component {
     } finally {
       this.setState({ loading: false });
     }
+
+    this.setState({
+      name: '',
+    });
   };
 
   render() {
-    const { newRepository, repositories, loading, error } = this.state;
+    const { name, repositories, loading, error } = this.state;
 
     return (
       <Container>
@@ -71,7 +67,7 @@ export default class Main extends Component {
           <input
             type="text"
             placeholder="Adicionar repositório"
-            value={newRepository}
+            value={name}
             onChange={this.handleInputChange}
           />
 
