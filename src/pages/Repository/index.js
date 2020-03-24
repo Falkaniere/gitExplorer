@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import api from '../../services/api';
+import api_git from '../../services/api_git';
 
 import { FaSpinner } from 'react-icons/fa';
 import Container from '../../components/Container/';
@@ -36,8 +36,8 @@ export default class Repository extends Component {
     const repositoryName = decodeURIComponent(match.params.repository);
 
     const [repository, issues] = await Promise.all([
-      api.get(`/repos/${repositoryName}`),
-      api.get(`/repos/${repositoryName}/issues`, {
+      api_git.get(`/repos/${repositoryName}`),
+      api_git.get(`/repos/${repositoryName}/issues`, {
         params: {
           state: filters.find(f => f.active).state,
           per_page: 5,
@@ -58,7 +58,7 @@ export default class Repository extends Component {
 
     const repositoryName = decodeURIComponent(match.params.repository);
 
-    const response = await api.get(`/repos/${repositoryName}/issues`, {
+    const response = await api_git.get(`/repos/${repositoryName}/issues`, {
       params: {
         state: filters[filterIndex].state,
         per_page: 5,

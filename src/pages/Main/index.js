@@ -16,17 +16,13 @@ export default class Main extends Component {
     error: null,
   };
 
-  // Carregar dados no localstorage
-  componentDidMount() {}
+  async componentDidMount() {
+    const response = await api.get('/repos/');
 
-  // Salvar dados no localstorage
-  // componentDidUpdate(_, prevState) {
-  //   const { repositories } = this.state;
-
-  //   if (prevState.repositories !== repositories) {
-  //     localStorage.setItem('repositories', JSON.stringify(repositories));
-  //   }
-  // }
+    this.setState({
+      repositories: response.data,
+    });
+  }
 
   handleInputChange = e => {
     this.setState({ name: e.target.value });
@@ -37,19 +33,19 @@ export default class Main extends Component {
 
     this.setState({ loading: true, error: false });
 
-    try {
-      const { name } = this.state;
-      if (name === '') throw 'digite um repósitorio';
+    const { name, repositories } = this.state;
 
-      await api.post('/repos/', { name });
-    } catch (error) {
-      this.setState({ error: true });
-    } finally {
-      this.setState({ loading: false });
-    }
+    if (name === '') throw 'digite um repósitorio';
+
+    await api.post('/repos/', { name });
+
+    const response = await api.get('/repos/');
 
     this.setState({
+      repositories: response.data,
       name: '',
+      loading: false,
+      error: false,
     });
   };
 
@@ -80,7 +76,7 @@ export default class Main extends Component {
           </SubmitButton>
         </Form>
         <List>
-          {repositories.map(repository => (
+          {this.state.repositories.map(repository => (
             <li key={repository.name}>
               <span>{repository.name}</span>
               <Link to={`/repository${encodeURIComponent(repository.name)}`}>
